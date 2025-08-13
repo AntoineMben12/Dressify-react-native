@@ -1,29 +1,56 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Stack, useRouter } from "expo-router";
+import React, { useEffect } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { AuthProvider, useAuth } from "../context/AuthContext";
+import { NotificationProvider } from "../context/NotificationContext";
+import "../styles/global.css";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function RouteGuard({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isAuthenticated, isLoading, router]);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#8B5CF6" />
+      </View>
+    );
   }
 
+  return <>{children}</>;
+}
+
+function RootLayoutContent() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <RouteGuard>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    </RouteGuard>
   );
 }
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <NotificationProvider>
+        <RootLayoutContent />
+      </NotificationProvider>
+    </AuthProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F8FAFC",
+  },
+});
