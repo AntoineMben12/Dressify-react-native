@@ -22,7 +22,7 @@ function FormLogin() {
       }
 
       await signIn(email, password);
-      router.push("/dashboard");
+      router.replace("/");
     } catch (error) {
       console.error("Sign in error:", error);
       setError(error instanceof Error ? error.message : "Sign in failed");
@@ -31,7 +31,7 @@ function FormLogin() {
 
   const handleDemoAccount = () => {
     console.log("Demo account pressed");
-    router.push("/dashboard");
+    router.replace("/");
   };
 
   return (

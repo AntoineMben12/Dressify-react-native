@@ -45,7 +45,7 @@ export default function Login() {
       if (isSignUp) {
         await signUp(email, password, name);
         Alert.alert("Success", "Account created successfully!", [
-          { text: "OK", onPress: () => router.push("/dashboard") }
+          { text: "OK", onPress: () => router.replace("/") }
         ]);
       }
     } catch (error) {
@@ -75,7 +75,7 @@ export default function Login() {
             <FormLogin />
             
             <View style={styles.switchContainer}>
-              <Text style={styles.switchText}>Don't have an account? </Text>
+              <Text style={styles.switchText}>Don&apos;t have an account? </Text>
               <TouchableOpacity onPress={() => setIsSignUp(true)}>
                 <Text style={styles.switchLink}>Sign up</Text>
               </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function Login() {
               style={styles.secondaryButton}
               onPress={() => {
                 console.log("Demo account pressed");
-                router.push("/dashboard");
+                router.replace("/");
               }}
             >
               <MaterialIcons name="explore" size={20} color="#374151" />
