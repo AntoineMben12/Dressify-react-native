@@ -180,7 +180,7 @@ function Dashboard() {
           <TouchableOpacity style={styles.actionCard}>
             <MaterialIcons name="trending-up" size={32} color="#F59E0B" />
             <Text style={styles.actionTitle}>Trends</Text>
-            <Text style={styles.actionSubtitle}>What's trending</Text>
+            <Text style={styles.actionSubtitle}>What&apos;s trending</Text>
           </TouchableOpacity>
         </View>
       </View>
